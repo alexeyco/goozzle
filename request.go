@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"golang.org/x/net/publicsuffix"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -21,6 +22,10 @@ type Request struct {
 
 func (r *Request) String() string {
 	return string(r.body)
+}
+
+func (r *Request) URL() *url.URL {
+	return r.u
 }
 
 func (r *Request) Header(key, value string) *Request {
@@ -78,7 +83,7 @@ func (r *Request) Do() (*Response, error) {
 		return nil, err
 	}
 
-	var buf *bytes.Buffer
+	var buf io.Reader = nil
 	if len(r.body) > 0 {
 		buf = bytes.NewBuffer(r.body)
 	}
@@ -129,12 +134,14 @@ func (r *Request) response(response *http.Response) (*Response, error) {
 	}
 
 	res := &Response{
+		request: r,
+		status:  response.StatusCode,
 		body:    body,
 		headers: response.Header,
 	}
 
 	if r.debug != nil {
-		r.debug(r, res)
+		r.debug(res)
 	}
 
 	return res, nil

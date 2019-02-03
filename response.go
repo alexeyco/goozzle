@@ -6,8 +6,18 @@ import (
 )
 
 type Response struct {
+	request *Request
+	status  int
 	headers http.Header
 	body    []byte
+}
+
+func (r *Response) Request() *Request {
+	return r.request
+}
+
+func (r *Response) Status() int {
+	return r.status
 }
 
 func (r *Response) Header(key string) string {

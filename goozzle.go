@@ -2,7 +2,7 @@ package goozzle
 
 import (
 	"fmt"
-		"net/http"
+	"net/http"
 	"net/url"
 )
 
@@ -17,7 +17,7 @@ const (
 
 var UserAgentDefault = fmt.Sprintf("Goozzle/%s", Version)
 
-type DebugRequestHandler func(request *Request, response *Response)
+type DebugRequestHandler func(*Response)
 
 func New(method string, url *url.URL) *Request {
 	header := http.Header{}
