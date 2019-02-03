@@ -9,6 +9,7 @@ type Response struct {
 	request *Request
 	status  int
 	headers http.Header
+	cookies []*http.Cookie
 	body    []byte
 }
 
@@ -26,6 +27,20 @@ func (r *Response) Header(key string) string {
 
 func (r *Response) Headers() map[string]string {
 	return getHeaders(r.headers)
+}
+
+func (r *Response) Cookie(key string) string {
+	for _, cookie := range r.cookies {
+		if cookie.Name == key {
+			return cookie.Value
+		}
+	}
+
+	return ""
+}
+
+func (r *Response) Cookies() []*http.Cookie {
+	return r.cookies
 }
 
 func (r *Response) Body() []byte {

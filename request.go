@@ -52,6 +52,7 @@ func (r *Request) Referer(referer string) *Request {
 }
 
 func (r *Request) Cookie(cookie *http.Cookie) *Request {
+	r.cookies = append(r.cookies, cookie)
 	return r
 }
 
@@ -140,8 +141,9 @@ func (r *Request) response(response *http.Response) (*Response, error) {
 	res := &Response{
 		request: r,
 		status:  response.StatusCode,
-		body:    body,
 		headers: response.Header,
+		cookies: response.Cookies(),
+		body:    body,
 	}
 
 	if r.debug != nil {
