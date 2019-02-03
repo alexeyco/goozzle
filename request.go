@@ -42,7 +42,7 @@ func (r *Request) Headers() map[string]string {
 }
 
 func (r *Request) UserAgent(userAgent string) *Request {
-	r.Header("User-Agent", userAgent)
+	r.header.Set("User-Agent", userAgent)
 	return r
 }
 
