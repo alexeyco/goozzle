@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	Version                   = "0.1"
+	Version                   = 1
 	UserAgentChrome           = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
 	UserAgentSafari           = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
 	UserAgentFirefox          = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0"
@@ -15,7 +15,7 @@ const (
 	UserAgentEdge             = "Mozilla/5.0 (Windows IoT 10.0; Android 6.0.1; WebView/3.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36 Edge/17.17083"
 )
 
-var UserAgentDefault = fmt.Sprintf("Goozzle/%s", Version)
+var UserAgentDefault = fmt.Sprintf("Goozzle/%d", Version)
 
 type DebugRequestHandler func(*Response)
 

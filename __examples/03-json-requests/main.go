@@ -33,6 +33,7 @@ func main() {
 		fmt.Println("")
 
 		fmt.Println("URL:", req.URL().String())
+		fmt.Println("Method:", req.Method())
 		fmt.Println("")
 
 		fmt.Println("Headers:")

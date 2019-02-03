@@ -24,6 +24,10 @@ func (r *Request) String() string {
 	return string(r.body)
 }
 
+func (r *Request) Method() string {
+	return r.method
+}
+
 func (r *Request) URL() *url.URL {
 	return r.u
 }
