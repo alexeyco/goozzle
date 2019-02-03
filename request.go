@@ -3,12 +3,13 @@ package goozzle
 import (
 	"bytes"
 	"encoding/json"
-	"golang.org/x/net/publicsuffix"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+
+	"golang.org/x/net/publicsuffix"
 )
 
 type Request struct {
@@ -33,7 +34,7 @@ func (r *Request) URL() *url.URL {
 }
 
 func (r *Request) Header(key, value string) *Request {
-	r.header.Add(key, value)
+	r.header.Set(key, value)
 	return r
 }
 
@@ -42,7 +43,7 @@ func (r *Request) Headers() map[string]string {
 }
 
 func (r *Request) UserAgent(userAgent string) *Request {
-	r.header.Set("User-Agent", userAgent)
+	r.Header("User-Agent", userAgent)
 	return r
 }
 
@@ -67,7 +68,7 @@ func (r *Request) Body(body []byte) (*Response, error) {
 }
 
 func (r *Request) JSON(v interface{}) (*Response, error) {
-	r.header.Add("Content-Type", "application/json")
+	r.Header("Content-Type", "application/json")
 
 	body, err := json.Marshal(v)
 	if err != nil {
@@ -78,7 +79,7 @@ func (r *Request) JSON(v interface{}) (*Response, error) {
 }
 
 func (r *Request) Form(v url.Values) (*Response, error) {
-	r.header.Add("Content-Type", "application/x-www-form-urlencoded")
+	r.Header("Content-Type", "application/x-www-form-urlencoded")
 	return r.Body([]byte(v.Encode()))
 }
 

@@ -48,7 +48,7 @@ func (r *Response) Body() []byte {
 }
 
 func (r *Response) String() string {
-	return string(r.body)
+	return string(r.Body())
 }
 
 func (r *Response) JSON(v interface{}) error {
