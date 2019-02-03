@@ -12,61 +12,73 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
+// Request HTTP-request struct
 type Request struct {
 	method  string
 	u       *url.URL
 	header  http.Header
 	cookies []*http.Cookie
 	body    []byte
-	debug   DebugRequestHandler
+	debug   DebugHandler
 }
 
+// String returns request body as string
 func (r *Request) String() string {
 	return string(r.body)
 }
 
+// Method returns request method
 func (r *Request) Method() string {
 	return r.method
 }
 
+// URL returns request URL
 func (r *Request) URL() *url.URL {
 	return r.u
 }
 
+// Header returns request header value by name
 func (r *Request) Header(key, value string) *Request {
 	r.header.Set(key, value)
 	return r
 }
 
+// Headers returns request headers map
 func (r *Request) Headers() map[string]string {
 	return getHeaders(r.header)
 }
 
+// UserAgent sets request custom user agent request header
 func (r *Request) UserAgent(userAgent string) *Request {
 	r.Header("User-Agent", userAgent)
 	return r
 }
 
+// Referer sets referer header
 func (r *Request) Referer(referer string) *Request {
 	r.Header("Referer", referer)
 	return r
 }
 
+// Cookie sets request cookie
 func (r *Request) Cookie(cookie *http.Cookie) *Request {
 	r.cookies = append(r.cookies, cookie)
 	return r
 }
 
-func (r *Request) Debug(h DebugRequestHandler) *Request {
+// Debug sets request debug handler func
+func (r *Request) Debug(h DebugHandler) *Request {
 	r.debug = h
 	return r
 }
 
+// Body sets request body
 func (r *Request) Body(body []byte) (*Response, error) {
 	r.body = body
 	return r.Do()
 }
 
+// JSON sets request JSON and returns response
 func (r *Request) JSON(v interface{}) (*Response, error) {
 	r.Header("Content-Type", "application/json")
 
@@ -78,18 +90,20 @@ func (r *Request) JSON(v interface{}) (*Response, error) {
 	return r.Body(body)
 }
 
+// Form sends encoded form and returns response
 func (r *Request) Form(v url.Values) (*Response, error) {
 	r.Header("Content-Type", "application/x-www-form-urlencoded")
 	return r.Body([]byte(v.Encode()))
 }
 
+// Do returns response
 func (r *Request) Do() (*Response, error) {
 	client, err := r.client()
 	if err != nil {
 		return nil, err
 	}
 
-	var buf io.Reader = nil
+	var buf io.Reader
 	if len(r.body) > 0 {
 		buf = bytes.NewBuffer(r.body)
 	}
