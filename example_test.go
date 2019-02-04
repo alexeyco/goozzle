@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-func ExampleDebug() {
+func ExampleRequest_Do() {
 	u, _ := url.Parse("https://jsonplaceholder.typicode.com/posts/1")
 
 	_, err := goozzle.Get(u).Debug(func(res *goozzle.Response) {
@@ -49,7 +49,7 @@ func ExampleDebug() {
 	}
 }
 
-func ExampleUnmarshalResponse() {
+func ExampleResponse_JSON() {
 	type Post struct {
 		ID     int    `json:"id"`
 		UserID int    `json:"userId"`
@@ -73,7 +73,7 @@ func ExampleUnmarshalResponse() {
 	log.Println(post)
 }
 
-func ExampleMarshalJSONRequest() {
+func ExampleRequest_JSON() {
 	type Post struct {
 		ID     int    `json:"id"`
 		UserID int    `json:"userId"`
