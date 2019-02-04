@@ -263,9 +263,9 @@ func Test_Form(t *testing.T) {
 
 func Test_Debug(t *testing.T) {
 	userAgent := UserAgentChrome
+	reqBody := "Foobar"
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer ts.Close()
@@ -275,8 +275,12 @@ func Test_Debug(t *testing.T) {
 		t.Error(err)
 	}
 
-	res, err := Get(u).UserAgent(userAgent).Debug(func(res *Response) {
+	res, err := Delete(u).UserAgent(userAgent).Debug(func(res *Response) {
 		req := res.Request()
+
+		if req.Method() != http.MethodDelete {
+			t.Errorf(`Request method should be %s, %s given`, http.MethodDelete, req.Method())
+		}
 
 		if u.String() != req.URL().String() {
 			t.Errorf(`Request url should be "%s", "%s" given`, u.String(), req.URL().String())
@@ -287,11 +291,15 @@ func Test_Debug(t *testing.T) {
 			t.Errorf(`Request should have %d headers, %d given`, 1, len(headers))
 		}
 
+		if req.String() != reqBody {
+			t.Errorf(`Request body should be "%s", "%s" given`, reqBody, req.String())
+		}
+
 		headers = res.Headers()
 		if len(headers) != 2 {
 			t.Errorf(`Response should have %d headers, %d given`, 2, len(headers))
 		}
-	}).Do()
+	}).Body([]byte(reqBody))
 
 	if err != nil {
 		t.Error(err)
