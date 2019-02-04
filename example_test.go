@@ -2,9 +2,9 @@ package goozzle_test
 
 import (
 	"fmt"
+	"github.com/alexeyco/goozzle"
 	"log"
 	"net/url"
-	"github.com/alexeyco/goozzle"
 )
 
 func ExampleDebug() {

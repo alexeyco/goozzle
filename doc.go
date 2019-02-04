@@ -1,4 +1,4 @@
 /*
-  PHP Guzzle flavoured HTTP client for golang
+Package goozzle - PHP Guzzle flavoured HTTP client for golang
 */
 package goozzle
