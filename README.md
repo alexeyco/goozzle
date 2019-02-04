@@ -44,7 +44,7 @@ structValue := requestStruct{
 	Foo: "bar",
 }
 
-res, err := Post(u).JSON(&structValue)
+res, err := goozzle.Post(u).JSON(&structValue)
 ```
 
 ## Send form
